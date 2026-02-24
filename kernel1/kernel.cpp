@@ -1,4 +1,8 @@
-extern "C" void load_idt(uint32_t);
+extern "C" void interrupt_handler() {
+    char* vga = (char*)0xB8000;
+    vga[0] = 'I';
+    vga[1] = 0x0F;
+}extern "C" void load_idt(uint32_t);
 
 void set_idt_gate(int n, uint32_t handler) {
     idt[n].offset_low = handler & 0xFFFF;
@@ -7,3 +11,5 @@ void set_idt_gate(int n, uint32_t handler) {
     idt[n].type_attr  = 0x8E;   // present, ring 0, interrupt gate
     idt[n].offset_high = (handler >> 16) & 0xFFFF;
 }
+
+
