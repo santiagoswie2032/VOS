@@ -12,4 +12,17 @@ void set_idt_gate(int n, uint32_t handler) {
     idt[n].offset_high = (handler >> 16) & 0xFFFF;
 }
 
+extern "C" void isr_test();
+
+void idt_init() {
+    idt_ptr.limit = sizeof(idt) - 1;
+    idt_ptr.base  = (uint32_t)&idt;
+
+    for (int i = 0; i < 256; i++) {
+        set_idt_gate(i, (uint32_t)isr_test);
+    }
+
+    asm volatile("lidt %0" : : "m"(idt_ptr));
+}
+
 
