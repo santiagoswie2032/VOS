@@ -23,6 +23,12 @@ void idt_init() {
     }
 
     asm volatile("lidt %0" : : "m"(idt_ptr));
+extern "C" void idt_init();
+
+extern "C" void kernel_main() {
+    idt_init();
+    asm volatile("int $0x21");
+    while (1);
 }
 
 
