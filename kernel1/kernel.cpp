@@ -1,4 +1,27 @@
-extern "C" void interrupt_handler() {
+//helper func to wrote to a hardware port
+
+void outb(unsigned short port, unsigned char val) {
+    asm volatile ( "outb %0, %1" : : "a"(val), "Nd"(port) );
+}
+
+// helper fucn to read from a hardware port
+
+unsigned char inb(unsigned short port) {
+    unsigned char ret;
+    asm volatile ( "inb %1, %0" : "=a"(ret) : "Nd"(port) );
+    return ret;
+}
+
+extern "C" void kmain() {
+    //initializing GDT and IDT here, also creating a cursor variable to track where i print.
+    int cursor = 0;
+    unsigned short* vga = (unsigned short*) 0xB8000;
+
+    const char* msg = "Kernel: IDT/GDT Initialization Pending...";
+    for(int i = 0; msg[i] != '\0'; i++) {
+        vga[cursor++] = (unsigned short) msg[i] | (0x0F << 8);
+    }
+}extern "C" void interrupt_handler() {
     char* vga = (char*)0xB8000;
     vga[0] = 'I';
     vga[1] = 0x0F;
