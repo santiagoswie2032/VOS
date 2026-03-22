@@ -1,15 +1,24 @@
-j#pragma once
+#pragma once
 #include <stdint.h>
 
-struct IDTEntry {
-    uint16_t offset_low;
-    uint16_t selector;
-    uint8_t  zero;
-    uint8_t  type_attr;
-    uint16_t offset_high;
+struct idt_entry {
+    uint16_t base_low;
+    uint16_t sel;
+    uint8_t  always0;
+    uint8_t  flags;
+    uint16_t base_high;
 } __attribute__((packed));
 
-struct IDTPointer {
+struct idt_ptr {
     uint16_t limit;
     uint32_t base;
 } __attribute__((packed));
+
+// global variables
+
+extern idt_entry idt[256];
+extern idt_ptr idtp;
+
+// functions
+extern "C" void idt_init();
+void set_idt_gate(int n, uint32_t handler);
