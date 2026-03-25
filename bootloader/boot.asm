@@ -23,3 +23,6 @@ message db "yoo wassup, im the bootloader :)", 0
 
 times 510 - ($ - $$) db 0
 dw 0xAA55
+
+// this bootloader i built is bitchass and dosent really work well with keyboard interrupt and all and i dont have the balls to create an entire million line
+//bootloader from scratch so i'll just be a good boy and try to work with GRUB
