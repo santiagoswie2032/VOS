@@ -48,11 +48,11 @@ void pic_remap()
 }
 
 
-// Load IDT
+// Load IDT 
 extern "C" void load_idt(uint32_t);
 
 
-// Initialize IDT
+// Initialize IDT 
 extern "C" void idt_init()
 {
     idtp.limit = sizeof(idt) - 1;
